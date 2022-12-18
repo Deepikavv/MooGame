@@ -28,12 +28,17 @@ namespace MooGame
                 .ConfigureServices((_, services) =>
                 services.AddScoped<IMooGameFactory, MooGameFactory>()
                 .AddTransient<EasyMooGame>()
+                .AddTransient<DifficultMooGame>()
                 .AddTransient<GameManager>()
                 .AddTransient<GameServiceResolver>(serviceProvider => userInput =>
                 {
                     if (userInput == "1")
                     {
                         return serviceProvider.GetService<EasyMooGame>();
+                    }
+                    else if (userInput == "2")
+                    {
+                        return serviceProvider.GetService<DifficultMooGame>();
                     }
                     else
                     {
