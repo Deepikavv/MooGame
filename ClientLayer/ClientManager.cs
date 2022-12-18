@@ -1,4 +1,6 @@
-﻿using MooGame.Interfaces;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MooGame.GameFactory;
+using MooGame.Interfaces;
 using MooGame.Models;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ namespace MooGame.ClientLayer
 {
     public static class ClientManager
     {
-        public static void StartGame()
+        public static void StartGame(IServiceProvider serviceProvider)
         {
             bool playOn = true;
             string playerName = AskPlayerName();
@@ -20,7 +22,9 @@ namespace MooGame.ClientLayer
                 DisplayGameMenu();
                 string userSelection = GetUserSelection();
 
-                EasyMooGame mooGame = new EasyMooGame();
+                var gameManager = serviceProvider.GetRequiredService<GameManager>();
+                var mooGame = gameManager.CreateMooGame(userSelection);
+                //EasyMooGame mooGame = new EasyMooGame();
 
                 mooGame.GetPlayerName(playerName);
                 mooGame.GetGoalLength();
