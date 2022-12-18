@@ -1,4 +1,5 @@
-﻿using MooGame.Models;
+﻿using MooGame.Interfaces;
+using MooGame.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,35 +13,24 @@ namespace MooGame.ClientLayer
         public static void StartGame()
         {
             bool playOn = true;
-            Console.WriteLine("Enter your user name:\n");
-            string name = Console.ReadLine();
+            string playerName = AskPlayerName();
 
             while (playOn)
             {
-                string goal = makeGoal();
+                DisplayGameMenu();
+                string userSelection = GetUserSelection();
 
+                EasyMooGame mooGame = new EasyMooGame();
 
-                Console.WriteLine("New game:\n");
-                //comment out or remove next line to play real games!
-                Console.WriteLine("For practice, number is: " + goal + "\n");
-                string guess = Console.ReadLine();
+                mooGame.GetPlayerName(playerName);
+                mooGame.GetGoalLength();
 
-                int nGuess = 1;
-                string bbcc = checkBC(goal, guess);
-                Console.WriteLine(bbcc + "\n");
-                while (bbcc != "BBBB,")
-                {
-                    nGuess++;
-                    guess = Console.ReadLine();
-                    Console.WriteLine(guess + "\n");
-                    bbcc = checkBC(goal, guess);
-                    Console.WriteLine(bbcc + "\n");
-                }
-                StreamWriter output = new StreamWriter("result.txt", append: true);
-                output.WriteLine(name + "#&#" + nGuess);
-                output.Close();
-                showTopList();
-                Console.WriteLine("Correct, it took " + nGuess + " guesses\nContinue?");
+                string goal = mooGame.CreateGoal();
+                int attempts = mooGame.CountAttempts(goal);
+                mooGame.UpdateResults();
+
+                Console.WriteLine("Correct, You made " + attempts + " attempts in this game");
+                Console.Write("Do you want to continue? (y/n): ");
                 string answer = Console.ReadLine();
                 if (answer != null && answer != "" && answer.Substring(0, 1) == "n")
                 {
@@ -48,79 +38,61 @@ namespace MooGame.ClientLayer
                 }
             }
         }
-        static string makeGoal()
+
+        public static string AskPlayerName()
         {
-            Random randomGenerator = new Random();
-            string goal = "";
-            for (int i = 0; i < 4; i++)
-            {
-                int random = randomGenerator.Next(10);
-                string randomDigit = "" + random;
-                while (goal.Contains(randomDigit))
-                {
-                    random = randomGenerator.Next(10);
-                    randomDigit = "" + random;
-                }
-                goal = goal + randomDigit;
-            }
-            return goal;
+            Console.WriteLine("Welcome to MooGame");
+            Console.WriteLine("Enter player name");
+            string playerName = Console.ReadLine();
+            return playerName;
         }
 
-        static string checkBC(string goal, string guess)
+        public static void DisplayGameMenu()
         {
-            int cows = 0, bulls = 0;
-            guess += "    ";     // if player entered less than 4 chars
-            for (int i = 0; i < 4; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    if (goal[i] == guess[j])
-                    {
-                        if (i == j)
-                        {
-                            bulls++;
-                        }
-                        else
-                        {
-                            cows++;
-                        }
-                    }
-                }
-            }
-            return "BBBB".Substring(0, bulls) + "," + "CCCC".Substring(0, cows);
+            Console.WriteLine("------New Game------\n");
+            Console.WriteLine("Select any game from below. Selection can be made using game number");
+            Console.WriteLine("1. Easy Moo Game. (Numbers will not repeat)");
+            Console.WriteLine("2. Difficult Moo Game. (Numbers will repeat)");
         }
 
-
-        static void showTopList()
+        public static string GetUserSelection()
         {
-            StreamReader input = new StreamReader("result.txt");
-            List<PlayerData> results = new List<PlayerData>();
-            string line;
-            while ((line = input.ReadLine()) != null)
+            string userSelection = "";
+            int userSelectedInteger = 0;
+            bool isInvalidInput = true;
+
+            while (isInvalidInput)
             {
-                string[] nameAndScore = line.Split(new string[] { "#&#" }, StringSplitOptions.None);
-                string name = nameAndScore[0];
-                int guesses = Convert.ToInt32(nameAndScore[1]);
-                PlayerData pd = new PlayerData(name, guesses);
-                int pos = results.IndexOf(pd);
-                if (pos < 0)
+                userSelection = Console.ReadLine();
+                try
                 {
-                    results.Add(pd);
+                    userSelectedInteger = Int32.Parse(userSelection);
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Only integer inputs are allowed");
+                }
+                catch (OverflowException)
+                {
+                    Console.WriteLine("Invalid input");
+                }
+
+                if ((userSelectedInteger == 1) || (userSelectedInteger == 2))
+                {
+                    isInvalidInput = false;
                 }
                 else
                 {
-                    results[pos].Update(guesses);
+                    isInvalidInput = true;
+                    Console.WriteLine("Invalid input");
                 }
-
-
             }
-            results.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
-            Console.WriteLine("Player   games average");
-            foreach (PlayerData p in results)
-            {
-                Console.WriteLine(string.Format("{0,-9}{1,5:D}{2,9:F2}", p.Name, p.NGames, p.Average()));
-            }
-            input.Close();
+            return userSelection;
         }
+
+
+
+
+
     }
 }

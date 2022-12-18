@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace MooGame.Interfaces
 {
-    internal interface IMooGame
+    public interface IMooGame
     {
+        string CreateGoal();
+        string GetUserGuess();
+        string CheckBullsCows(string goal, string guess);
+        int CountAttempts(string goal);
+        string CreateBullsString(int goalLength);
+        void UpdateResults();
+        void SetMaxGoalLength();
+        void GetPlayerName(string userName);
+        int GetGoalLength();
     }
 }
