@@ -14,7 +14,7 @@ namespace MooGame.Models
         public string CreateGoal(int goalLength, int maxRange)
         {
             SetMaxRange();
-            Random randomGenerator = new Random();
+            Random randomGenerator = new();
             string goal = "";
 
             while (goal.Length < goalLength)
@@ -29,12 +29,12 @@ namespace MooGame.Models
 
         public string GetUserGuess()
         {
-            string guess = "";
+            string? guess = "";
             bool isValidGuess = false;
             while (!isValidGuess)
             {
                 guess = Console.ReadLine();
-                if (guess.Length == this.Goal.Length)
+                if (guess!.Length == this.Goal!.Length)
                 {
                     isValidGuess = true;
                 }
@@ -51,45 +51,54 @@ namespace MooGame.Models
         public string CheckBullsCows(string goal, string guess)
         {
             string outputBC = "";
-            string matchedNumbers = "";
-            bool matchFound;
-
+            string checkedChars = "";
+            int charGoalCount = 0;
+            int checkedCharCount = 0;
             for (int i = 0; i < guess.Length; i++)
             {
-                matchFound = false;
-                for (int j = 0; j < goal.Length; j++)
+                char goalChar = goal[i];
+                char guessChar = guess[i];
+                charGoalCount = goal.Count(x => x == guessChar);
+
+                if (guessChar == goalChar)
                 {
-                    if (guess[i] == goal[j])
+                    checkedChars += guessChar;
+                    outputBC += "B";
+                    checkedCharCount = checkedChars.Count(x => x == guessChar);
+
+                    if (checkedCharCount > charGoalCount)
                     {
-                        if (!matchedNumbers.Contains(guess[i]))
-                        {
-                            matchedNumbers += goal[j];
-                            matchFound = true;
-                            if (i == j)
-                            {
-                                outputBC += "B";
-                            }
-                            else
-                            {
-                                outputBC += "C";
-                            }
-                        }
+                        int indexToModify = checkedChars.IndexOf(guessChar);
+                        outputBC = outputBC.Remove(indexToModify, 1);
+                        outputBC = outputBC.Insert(indexToModify, ",");
                     }
                 }
-                if (!matchFound)
+                else if (goal.IndexOf(guessChar) != -1)
+                {
+                    checkedChars += guessChar;
+                    if (checkedChars.Count(x => x == guessChar) > charGoalCount)
+                    {
+                        outputBC += ",";
+                    }
+                    else
+                    {
+                        outputBC += "C";
+                    }
+                }
+                else
                 {
                     outputBC += ",";
+                    checkedChars += guessChar;
                 }
             }
             return outputBC;
         }
-
         public int CountAttempts(string goal)
         {
             int attempts = 0;
-            string targetRequired = this.TargetBulls;
+            string targetRequired = this.TargetBulls!;
             string bbcc = "";
-            string guess = "";
+            string guess;
             while (bbcc != targetRequired)
             {
                 attempts++;
@@ -114,7 +123,7 @@ namespace MooGame.Models
 
         public void UpdateResults()
         {
-            playerData.SaveGameData(PlayerName, NoOfGuesses);
+            playerData.SaveGameData(PlayerName!, NoOfGuesses);
             playerData.ShowTopList();
         }
 
@@ -136,7 +145,7 @@ namespace MooGame.Models
         {
             SetMaxGoalLength();
             Console.WriteLine($"Enter goal length you want. Max goal length allowed is {this.MaxGoalLength}:\n");
-            string userSelection = "";
+            string? userSelection;
             int userSelectedInteger = 0;
             bool isInvalidInput = true;
             while (isInvalidInput)
@@ -144,7 +153,7 @@ namespace MooGame.Models
                 userSelection = Console.ReadLine();
                 try
                 {
-                    userSelectedInteger = Int32.Parse(userSelection);
+                    userSelectedInteger = Int32.Parse(userSelection!);
                 }
                 catch (FormatException)
                 {

@@ -13,7 +13,6 @@ namespace MooGame
 {
     class MainClass
     {
-
         public static void Main(string[] args)
         {
             IHost host = ConfigureDependencies(args);
@@ -34,11 +33,11 @@ namespace MooGame
                 {
                     if (userInput == "1")
                     {
-                        return serviceProvider.GetService<EasyMooGame>();
+                        return serviceProvider.GetService<EasyMooGame>()!;
                     }
                     else if (userInput == "2")
                     {
-                        return serviceProvider.GetService<DifficultMooGame>();
+                        return serviceProvider.GetService<DifficultMooGame>()!;
                     }
                     else
                     {
@@ -55,8 +54,5 @@ namespace MooGame
             var serviceProvider = serviceScope.ServiceProvider;
             return serviceProvider;
         }
-    }
-
-    
-    
+    }  
 }

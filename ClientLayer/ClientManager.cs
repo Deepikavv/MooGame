@@ -24,8 +24,7 @@ namespace MooGame.ClientLayer
 
                 var gameManager = serviceProvider.GetRequiredService<GameManager>();
                 var mooGame = gameManager.CreateMooGame(userSelection);
-                //EasyMooGame mooGame = new EasyMooGame();
-
+                
                 mooGame.GetPlayerName(playerName);
                 mooGame.GetGoalLength();
                 int goalLength = mooGame.GoalLength;
@@ -38,7 +37,7 @@ namespace MooGame.ClientLayer
 
                 Console.WriteLine("Correct, You made " + attempts + " attempts in this game");
                 Console.Write("Do you want to continue? (y/n): ");
-                string answer = Console.ReadLine();
+                string? answer = Console.ReadLine();
                 if (answer != null && answer != "" && answer.Substring(0, 1) == "n")
                 {
                     playOn = false;
@@ -50,8 +49,8 @@ namespace MooGame.ClientLayer
         {
             Console.WriteLine("Welcome to MooGame");
             Console.WriteLine("Enter player name");
-            string playerName = Console.ReadLine();
-            return playerName;
+            string? playerName = Console.ReadLine();
+            return playerName!;
         }
 
         public static void DisplayGameMenu()
@@ -64,7 +63,7 @@ namespace MooGame.ClientLayer
 
         public static string GetUserSelection()
         {
-            string userSelection = "";
+            string? userSelection = "";
             int userSelectedInteger = 0;
             bool isInvalidInput = true;
 
@@ -73,7 +72,7 @@ namespace MooGame.ClientLayer
                 userSelection = Console.ReadLine();
                 try
                 {
-                    userSelectedInteger = Int32.Parse(userSelection);
+                    userSelectedInteger = Int32.Parse(userSelection!);
                 }
                 catch (FormatException)
                 {
@@ -94,12 +93,7 @@ namespace MooGame.ClientLayer
                     Console.WriteLine("Invalid input");
                 }
             }
-            return userSelection;
+            return userSelection!;
         }
-
-
-
-
-
     }
 }

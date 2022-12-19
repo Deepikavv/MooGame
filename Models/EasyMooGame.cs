@@ -15,7 +15,7 @@ namespace MooGame.Models
         public string CreateGoal(int goalLength, int maxRange)
         {
             SetMaxRange();
-            Random randomGenerator = new Random();
+            Random randomGenerator = new();
             string goal = "";
 
             while (goal.Length < goalLength)
@@ -33,13 +33,13 @@ namespace MooGame.Models
 
         public string GetUserGuess()
         {
-            string guess = "";
+            string? guess = "";
             bool isValidGuess = false;
             while (!isValidGuess)
             {
                 Console.WriteLine("Enter guess");
                 guess = Console.ReadLine();
-                if (guess.Length == this.Goal.Length)
+                if (guess!.Length == this.Goal!.Length)
                 {
                     isValidGuess = true;
                 }
@@ -92,9 +92,9 @@ namespace MooGame.Models
         public int CountAttempts(string goal)
         {
             int attempts = 0;
-            string targetRequired = this.TargetBulls;
+            string? targetRequired = this.TargetBulls;
             string bbcc = "";
-            string guess = "";
+            string guess;
 
             while (bbcc != targetRequired)
             {
@@ -128,7 +128,7 @@ namespace MooGame.Models
         {
             SetMaxGoalLength();
             Console.WriteLine($"Enter goal length you want.Max goal length allowed is {this.MaxGoalLength}:\n");
-            string userSelection = "";
+            string? userSelection;
             int userSelectedInteger = 0;
             bool isInvalidInput = true;
             while (isInvalidInput)
@@ -136,7 +136,7 @@ namespace MooGame.Models
                 userSelection = Console.ReadLine();
                 try
                 {
-                    userSelectedInteger = Int32.Parse(userSelection);
+                    userSelectedInteger = Int32.Parse(userSelection!);
                 }
                 catch (FormatException)
                 {
@@ -168,7 +168,7 @@ namespace MooGame.Models
         }
         public void UpdateResults()
         {
-            playerData.SaveGameData(PlayerName, NoOfGuesses);
+            playerData.SaveGameData(PlayerName!, NoOfGuesses);
             playerData.ShowTopList();
         }
 

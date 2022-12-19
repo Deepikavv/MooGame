@@ -9,7 +9,7 @@ namespace MooGame.Models
 {
     public class PlayerData : IPlayerData
     {
-        public string Name { get; private set; }
+        public string? Name { get; private set; }
         public int NGames { get; private set; }
         int totalGuess;
 
@@ -35,20 +35,20 @@ namespace MooGame.Models
             return (double)totalGuess / NGames;
         }
 
-        public override bool Equals(Object p)
+        public override bool Equals(Object? p)
         {
-            return Name.Equals(((PlayerData)p).Name);
+            return Name!.Equals(((PlayerData)p!).Name);
         }
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode();
+            return Name!.GetHashCode();
         }
 
         public void SaveGameData(string playerName, int attempts)
         {
             string filePath = AppDomain.CurrentDomain.BaseDirectory;
-            StreamWriter output = new StreamWriter((filePath + "GameResult.txt"), append: true);
+            StreamWriter output = new((filePath + "GameResult.txt"), append: true);
             output.WriteLine(playerName + "#&#" + attempts);
             output.Close();
         }
@@ -56,15 +56,15 @@ namespace MooGame.Models
         public void ShowTopList()
         {
             string filePath = AppDomain.CurrentDomain.BaseDirectory;
-            StreamReader input = new StreamReader((filePath + "GameResult.txt"));
-            List<PlayerData> results = new List<PlayerData>();
-            string line;
+            StreamReader input = new((filePath + "GameResult.txt"));
+            List<PlayerData> results = new();
+            string? line;
             while ((line = input.ReadLine()) != null)
             {
                 string[] nameAndScore = line.Split(new string[] { "#&#" }, StringSplitOptions.None);
                 string name = nameAndScore[0];
                 int guesses = Convert.ToInt32(nameAndScore[1]);
-                PlayerData pd = new PlayerData(name, guesses);
+                PlayerData pd = new(name, guesses);
                 int position = results.IndexOf(pd);
                 if (position < 0)
                 {
