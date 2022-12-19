@@ -18,9 +18,11 @@ namespace MooGame
             IHost host = ConfigureDependencies(args);
             var serviceProvider = GetServiceProvider(host);
 
+            //Call client manager static class to start the game
             ClientManager.StartGame(serviceProvider);
 
         }
+        // Method to configure dependecies and resolving service conflicts
         static IHost ConfigureDependencies(string[] args)
         {
             IHost host = Host.CreateDefaultBuilder(args)
@@ -29,6 +31,7 @@ namespace MooGame
                 .AddTransient<EasyMooGame>()
                 .AddTransient<DifficultMooGame>()
                 .AddTransient<GameManager>()
+                // Delegate GameServiceResolver is now responsible for providing required MooGame service
                 .AddTransient<GameServiceResolver>(serviceProvider => userInput =>
                 {
                     if (userInput == "1")

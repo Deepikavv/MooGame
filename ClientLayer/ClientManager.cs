@@ -21,8 +21,10 @@ namespace MooGame.ClientLayer
             {
                 DisplayGameMenu();
                 string userSelection = GetUserSelection();
-
+                // Call dependency injection container to instantiate GameManager service
                 var gameManager = serviceProvider.GetRequiredService<GameManager>();
+                // Gamemanager is now responsible for getting required MooGame by user.
+                // userSelection is then passed as input parameter to delegate in DI services.
                 var mooGame = gameManager.CreateMooGame(userSelection);
                 
                 mooGame.GetPlayerName(playerName);

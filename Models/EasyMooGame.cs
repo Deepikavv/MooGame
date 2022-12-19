@@ -21,7 +21,7 @@ namespace MooGame.Models
             while (goal.Length < goalLength)
             {
                 int randomDigit = randomGenerator.Next(maxRange);
-                if (!goal.Contains("" + randomDigit))
+                if (!goal.Contains("" + randomDigit)) // Condition for avoiding number repitions
                 {
                     goal += randomDigit;
                 }
@@ -147,7 +147,7 @@ namespace MooGame.Models
                     Console.WriteLine("Invalid input");
                 }
 
-                if ((userSelectedInteger <= this.MaxGoalLength))
+                if ((userSelectedInteger <= this.MaxGoalLength) && (userSelectedInteger > 0))
                 {
                     isInvalidInput = false;
                 }

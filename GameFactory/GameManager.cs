@@ -9,6 +9,7 @@ namespace MooGame.GameFactory
 {
     public class GameManager
     {
+        // Create dependency on IMooGameFactory
         private readonly IMooGameFactory _mooGameFactory;
         public GameManager(IMooGameFactory mooGameFactory)
         {

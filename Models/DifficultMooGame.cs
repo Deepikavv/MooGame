@@ -11,6 +11,7 @@ namespace MooGame.Models
     {
         public int GoalLength { get; set; }
         public int MaxRange { get; set; }
+        // Creates string with repeated numbers
         public string CreateGoal(int goalLength, int maxRange)
         {
             SetMaxRange();
@@ -48,6 +49,7 @@ namespace MooGame.Models
             return guess;
         }
 
+        // Allows checking of repeated characters of a string
         public string CheckBullsCows(string goal, string guess)
         {
             string outputBC = "";
@@ -164,7 +166,7 @@ namespace MooGame.Models
                     Console.WriteLine("Invalid input");
                 }
 
-                if ((userSelectedInteger <= this.MaxGoalLength))
+                if ((userSelectedInteger <= this.MaxGoalLength) && (userSelectedInteger > 0))
                 {
                     isInvalidInput = false;
                 }
