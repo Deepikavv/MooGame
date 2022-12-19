@@ -9,15 +9,17 @@ namespace MooGame.Models
 {
     public class DifficultMooGame : MooGame, IMooGame
     {
-        public string CreateGoal()
+        public int GoalLength { get; set; }
+        public int MaxRange { get; set; }
+        public string CreateGoal(int goalLength, int maxRange)
         {
             SetMaxRange();
             Random randomGenerator = new Random();
             string goal = "";
 
-            while (goal.Length < this.GoalLength)
+            while (goal.Length < goalLength)
             {
-                int randomDigit = randomGenerator.Next(this.MaxRange);
+                int randomDigit = randomGenerator.Next(maxRange);
                 goal += randomDigit;
             }
             Console.WriteLine($"Goal is {goal}");

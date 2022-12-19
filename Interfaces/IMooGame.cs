@@ -8,7 +8,9 @@ namespace MooGame.Interfaces
 {
     public interface IMooGame
     {
-        string CreateGoal();
+        int GoalLength { get; set; }
+        int MaxRange { get; set; }
+        string CreateGoal(int goalLength, int maxRange);
         string GetUserGuess();
         string CheckBullsCows(string goal, string guess);
         int CountAttempts(string goal);
@@ -17,5 +19,6 @@ namespace MooGame.Interfaces
         void SetMaxGoalLength();
         void GetPlayerName(string userName);
         int GetGoalLength();
+        void SetMaxRange();
     }
 }

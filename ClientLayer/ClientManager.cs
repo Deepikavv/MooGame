@@ -28,8 +28,11 @@ namespace MooGame.ClientLayer
 
                 mooGame.GetPlayerName(playerName);
                 mooGame.GetGoalLength();
+                int goalLength = mooGame.GoalLength;
+                mooGame.SetMaxRange();
+                int maxLength = mooGame.MaxRange;
 
-                string goal = mooGame.CreateGoal();
+                string goal = mooGame.CreateGoal(goalLength, maxLength);
                 int attempts = mooGame.CountAttempts(goal);
                 mooGame.UpdateResults();
 

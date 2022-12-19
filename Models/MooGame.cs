@@ -10,9 +10,7 @@ namespace MooGame.Models
     {
         public string GameType { get; set; }
         public string Goal { get; set; }
-        public int GoalLength { get; set; }
         public int MaxGoalLength { get; set; }
-        public int MaxRange { get; set; }
         public string Guess { get; set; }
         public string TargetBulls { get; set; }
         public int NoOfGuesses { get; set; }
