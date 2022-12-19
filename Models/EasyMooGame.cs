@@ -26,7 +26,7 @@ namespace MooGame.Models
                     goal += randomDigit;
                 }
             }
-            Console.WriteLine($"Goal is {goal}");
+            //Console.WriteLine($"Goal is {goal}");
             this.Goal = goal;
             return goal;
         }

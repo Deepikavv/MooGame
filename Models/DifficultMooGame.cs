@@ -23,7 +23,7 @@ namespace MooGame.Models
                 int randomDigit = randomGenerator.Next(maxRange);
                 goal += randomDigit;
             }
-            Console.WriteLine($"Goal is {goal}");
+            //Console.WriteLine($"Goal is {goal}");
             this.Goal = goal;
             return goal;
         }
@@ -34,6 +34,7 @@ namespace MooGame.Models
             bool isValidGuess = false;
             while (!isValidGuess)
             {
+                Console.WriteLine("Enter guess");
                 guess = Console.ReadLine();
                 if (guess!.Length == this.Goal!.Length)
                 {
